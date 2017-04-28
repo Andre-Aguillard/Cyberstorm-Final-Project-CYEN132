@@ -2,7 +2,7 @@
 from tkinter import *
 import RPi.GPIO as GPIO
 
-
+NumberOfLives = 6
 
 # GUI to display picture, letters left, and letter input.
 class GUI4Hangman(Frame):
@@ -17,6 +17,18 @@ class GUI4Hangman(Frame):
 
 # GPIO pins that light up with wrong, incorrect, and number of lives left
 
+# Initialize the Raspberry Pi by disabeling any warnings and telling it
+# we're going to use the BCM pin numbering scheme.
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+#Initialize red and green led states
+# No guesses have been made, so set both pins low to start
+GPIO.output(InputPinNumber1Here, GPIO.LOW)
+GPIO.output(InputPinNumber2Here, GPIO.LOW)
+#Initialize the number of lives LEDs here
+#All of these should start lit up
+GPIO.output(InputPinNumber1Here, GPIO.HIGH)
+GPIO.output(InputPinNumber2Here, GPIO.HIGH)
 
 # Main Code 
 
