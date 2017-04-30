@@ -38,12 +38,24 @@ class Hangman(Frame):
     text_frame.pack(side=RIGHT, fill=Y)
     text_frame.pack_propagate(False)
     
+  def setHangmanImage(self):
+    Hangman.img = PhotoImage(file=deathstar.jpg)
+    Hangman.image.config(image=Game.img)
+    Hangman.image.image = Game.img
+    
   def numberOfLives(self):
     # Light up the number of LED's equal to the number of Lives the user has left.
-    
+    pass
 # GPIO pins that light up with wrong, incorrect, and number of lives left
-
-
+  def play(self):
+    # configure GUI
+    self.setupGUI()
+    # set the Hangman Image
+    self.setHangmanImage()
+    
+  def process(self):
+    pass
+    
 ####################### MAIN FUNCTION that sets everything up #################
 
 # Initialize the Raspberry Pi by disabeling any warnings and telling it
@@ -60,11 +72,14 @@ pins = [21,20,26,12,19,6,5] #list of GPIO pins for lights
 for x in range (0, NumberOfLives) :
   GPIO.output(pins[x],GPIO.HIGH)
 
+# the default size of the GUI is 800x600
+WIDTH = 800
+HEIGHT = 600
+  
 # Main Code 
-
+#create the window
 window = Tk()
 window.title("Don't blow up the Death Star")
 t = GUI4Hangman(window)
-t.setupGUI()
+t.play()
 window.mainloop()
-
