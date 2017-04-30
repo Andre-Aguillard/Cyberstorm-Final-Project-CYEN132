@@ -51,15 +51,26 @@ class Hangman(Frame):
   def numberOfLives(self):
     # Light up the number of LED's equal to the number of Lives the user has left.
     pass
+  
+  def setStatus(self, status):
+      # enable text widget, clear it, set it, disable it
+      Hangman.text.config(state=NORMAL)
+      Hangman.text.delete("1.0", END) 
+      Hangman.text.insert(END, "Welsom to intergalactic hangman, may I take your order?")
+      
 # GPIO pins that light up with wrong, incorrect, and number of lives left
   def play(self):
     # configure GUI
     self.setupGUI()
     # set the Hangman Image
     self.setHangmanImage()
-    
+    # setup the text box to the left of the GUI
+    self.setStatus
   def process(self):
     pass
+    self.setStatus(response)
+    self.setRoomImage()
+    Hangman.player_input.delete(0, END)
     
 ####################### MAIN FUNCTION that sets everything up #################
 
