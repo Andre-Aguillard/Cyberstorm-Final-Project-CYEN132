@@ -39,7 +39,7 @@ class Hangman(Frame):
     text_frame.pack_propagate(False)
     
   def setHangmanImage(self):
-    Hangman.img = PhotoImage(file=deathstar.jpg)
+    Hangman.img = PhotoImage(file=deathstar.png)
     Hangman.image.config(image=Game.img)
     Hangman.image.image = Game.img
     
