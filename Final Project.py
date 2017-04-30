@@ -3,7 +3,7 @@ from Tkinter import *
 import RPi.GPIO as GPIO
 
 NumberOfLives = 6
-HangManword = "word"
+hangmanWord = "word"
 
 
 # GUI to display picture, letters left, and letter input.
@@ -12,7 +12,7 @@ class Hangman(Frame):
     def __init__(self, parent):
         # calls constructor in superclass
         Frame.__init__(self, parent)  # This sets up the main window of the GUI
-        self.parent = parent         # in order to build widgets on to top it.
+        self.parent = parent          # in order to build widgets on to top it.
 
     def setupGUI(self):  # Initializes the layout for the GUI
         # Organize the GUI
@@ -78,8 +78,8 @@ class Hangman(Frame):
         self.setRoomImage()
         Hangman.player_input.delete(0, END)
 
-####################### MAIN FUNCTION that sets everything up #################
 
+#################### MAIN FUNCTION that sets everything up ####################
 # Initialize the Raspberry Pi by disabeling any warnings and telling it
 # we're going to use the BCM pin numbering scheme.
 GPIO.setwarnings(False)
