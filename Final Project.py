@@ -32,16 +32,21 @@ class Hangman(Frame):
     Hangman.image.image = img
     Hangman.image.pack(side=LEFT, fill=Y)
     Hangman.image.pack_propagate(False)
-    
+    # first, place frame where the text will be displayed
+    text_frame = Frame(self, width=WIDTH / 2, height=HEIGHT)
+    # widget - same deal as above
+    # disable by default
+    # don't let it control frame's size
     Hangman.text = Text(text_frame, bg="lightgrey", state=DISABLED)
     Hangman.text.pack(fill=Y, expand=1)
     text_frame.pack(side=RIGHT, fill=Y)
     text_frame.pack_propagate(False)
     
   def setHangmanImage(self):
-    Hangman.img = PhotoImage(file=deathstar.png)
-    Hangman.image.config(image=Game.img)
-    Hangman.image.image = Game.img
+    Hangman.img = PhotoImage(file="deathstar.gif")
+    #pictures used must be saved as a gif.
+    Hangman.image.config(image=Hangman.img)
+    Hangman.image.image = Hangman.img
     
   def numberOfLives(self):
     # Light up the number of LED's equal to the number of Lives the user has left.
