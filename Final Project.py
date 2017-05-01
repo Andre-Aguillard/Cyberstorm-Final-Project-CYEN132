@@ -3,8 +3,24 @@ from Tkinter import *
 import RPi.GPIO as GPIO
 
 NumberOfLives = 6
-hangmanWord = "word"
+HangmanWord = "word"
 
+class Images(object):
+    def __init__(self, name):
+        self.name = name
+        self.images = [] # list for images
+        
+    # image getter   
+    @property
+    def images(self):
+        return self._images        
+    # image setter
+    @images.setter
+    def images(self, value):
+        self._images = value
+    ## Add image function to easily change the image
+    def addImage (self, image):
+        self._images.append(image)
 
 # GUI to display picture, letters left, and letter input.
 class Hangman(Frame):
@@ -14,6 +30,7 @@ class Hangman(Frame):
         Frame.__init__(self, parent)  # This sets up the main window of the GUI
         self.parent = parent          # in order to build widgets on to top it.
 
+        
     def setupGUI(self):  # Initializes the layout for the GUI
         # Organize the GUI
         # this function works fine, as long as you have the images as actual
@@ -74,6 +91,7 @@ class Hangman(Frame):
 
     def process(self):
         pass
+        
         self.setStatus(response)
         self.setRoomImage()
         Hangman.player_input.delete(0, END)
@@ -102,6 +120,6 @@ HEIGHT = 600
 # create the window
 window = Tk()
 window.title("Don't blow up the Death Star")
-t = GUI4Hangman(window)
+t = Hangman(window)
 t.play()
 window.mainloop()
