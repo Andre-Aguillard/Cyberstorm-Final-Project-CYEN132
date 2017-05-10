@@ -1,72 +1,56 @@
-## Python Code for CYEN 132 Final Rpi Assignement
 from Tkinter import *
 
-NumberOfLives = 6
-HangManword = "word"
 
-# GUI to display picture, letters left, and letter input.
-class Hangman(Frame):
-  def __init__(self, parent):
-    # calls constructor in superclass
-    Frame.__init__(self,parent) ### This sets up the main window of the GUI
-    self.parent = parent        ### in order to build widgets on to top it.
-                
-  def setupGUI(self): ##Initializes the layout for the GUI
-    #Organize the GUI
-    # this function works fine, as long as you have the images as actual GIFs
-    self.pack(fill=BOTH, expand=1)
-    #setup the player input at the bottom of the GUI
-    #widget is a Tkinter Entry
-    #background is white; bind return key to function process in class
-    Hangman.player_input = Entry(self, bg="white")
-    Hangman.player_input.bind("<Return>", self.process)
-    Hangman.player_input.pack(side=BOTTOM, fill=X)
-    Hangman.player_input.focus()
-    
-    # setup image to the left of GUI
-    # widget is a Tkinter label
-    # don't let image control width's size
-    img = None
-    Hangman.image = Label(self, width=WIDTH / 2, height=HEIGHT, image = img)
-    Hangman.image.image = img
-    Hangman.image.pack(side=LEFT, fill=Y)
-    Hangman.image.pack_propagate(False)
-    # first, place frame where the text will be displayed
-    text_frame = Frame(self, width=WIDTH / 2, height=HEIGHT)
-    # widget - same deal as above
-    # disable by default
-    # don't let it control frame's size
-    Hangman.text = Text(text_frame, bg="lightgrey", state=DISABLED)
-    Hangman.text.pack(fill=Y, expand=1)
-    text_frame.pack(side=RIGHT, fill=Y)
-    text_frame.pack_propagate(False)
-    
-  def setHangmanImage(self):
-    Hangman.img = PhotoImage(file="skull.gif")
-    Hangman.image.config(image=Hangman.img)
-    Hangman.image.image = Hangman.img
-    
-  def numberOfLives(self):
-    # Light up the number of LED's equal to the number of Lives the user has left.
-    pass
-# GPIO pins that light up with wrong, incorrect, and number of lives left
-  def play(self):
-    # configure GUI
-    self.setupGUI()
-    # set the Hangman Image
-    self.setHangmanImage()
-    
-  def process(self):
-    pass
-    
-# the default size of the GUI is 800x600
-WIDTH = 800
-HEIGHT = 600
-  
-# Main Code 
-#create the window
-window = Tk()
-window.title("Don't blow up the Death Star")
-t = Hangman(window)
-t.play()
-window.mainloop()
+potentialWords = "Andromeda Antlia Apus Aquarius Aquila Ara Aries Auriga Bootes Caelum \
+        Camelopardalis Cancer Canes_Venatici Canis_Major Canis_Minor \
+        Capricornus Carina Cassiopeia Centaurus Cepheus Cetus Chamaeleon \
+        Circinus Columba Coma_Berenices Corona_Austrina Corona_Borealis \
+        Corvus Crater Crux Cygnus Delphinus Dorado Draco Equuleus Eridanus \
+        Fornax Gemini Grus Hercules Horologium Hydra Hydrus Indus Lacerta Leo \
+        Leo_Minor Lepus Libra Lupus Lynx Lyra Mensa Microscopium Monoceros \
+        Musca Norma Octans Ophiuchus Orion Pavo Pegasus Perseus Phoenix \
+        Pictor Pisces Piscis_Austrinus Puppis Pyxis Reticulum Sagitta \
+        Sagittarius Scorpius Sculptor Scutum Serpens Sextans Taurus \
+        Telescopium Triangulum Triangulum_Australe Tucana Ursa_Major \
+        Ursa_Minor Vela Virgo Volans Vulpecula".split()
+
+dictOfWords = {x:potentialWords[x] for x in range(0, len(potentialWords))}
+WIDTH = 100
+HEIGHT = 200
+
+master = Tk()
+top = Toplevel()
+top.title("List of words:")
+
+scrollbar = Scrollbar(top)
+scrollbar.pack(side=RIGHT, fill=Y)
+
+player_input = Entry(top, width =WIDTH)
+player_input.bind("<Return>", process())
+player_input.pack(side=BOTTOM, fill=X)
+player_input.focus
+
+listbox = Listbox(top, yscrollcommand=scrollbar.set, width=WIDTH)
+for key,value in dictOfWords.items():
+    listbox.insert(END, str(key) + "-->" + value)
+listbox.pack(side=LEFT, fill=BOTH)
+
+scrollbar.config(command=listbox.yview)
+
+mainloop()
+
+def process(self):
+    #Take the player input from the popup window
+    action = player_input
+    # Check to see if the number is in the list of potential words
+    if (action in dictofWords):
+        top.destroy
+        top = Toplevel()
+        top.title("You chose: ")
+
+        text = Text(top, width=WIDTH)
+        text.pack(side=TOP, fill=X)
+
+        button = Button(top, text="Accept", width =WIDTH/3)
+        button.pack(side=BOTTOM, fill=X)
+
