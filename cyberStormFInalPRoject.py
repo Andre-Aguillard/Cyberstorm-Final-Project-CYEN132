@@ -67,89 +67,98 @@ class Hangman(Frame):
 	self.setHangmanImage()
 	# setup the text box to the left of the GUI
 	self.setStatus
-  def process(self):
-	pass
-	self.setStatus(response)
-	self.setRoomImage()
-	Hangman.player_input.delete(0, END)
-
-
-#adds function to show letters guessed correctly this can be used
-	#after the  if "the guess is correct" statement to show correct
-	#guesses on the gui
-	#this is whe
 	
+	
+  def process(self):
+          pass
+          
+          self.setStatus(response)
+          # Grab the player's input from the input at the bottom of the GUI
+          action = Hangman.player_input.get()
+          # Convert all player input to lowercase.
+          action = action.lower()
+          # Make sure player input is only one character:
+          ## Splits the player input based off white spaces and stores that in a list
+          characters = action.split()
+          if len(characters != 1):
+              response = "Please input only one character as your guess. Thank you."
+              display(response)
+          else:
+              self.checkInput() 
+	
+          self.display(response)
+          self.setRoomImage()
+          Hangman.player_input.delete(0, END)
+
+
                 
                 
 
-#this just checks to see if 
-	def play(self):
+ def checkInput(self):
 		#declares a variable for the list of the letters for the word
-		letters1 = list(HangManWord)
+		letters = list(HangManWord)
 		#first deletes duplicates in the list of letters
 		#then declares a variable to store the word's range
-		letters2 = set(letters1)
-		rang = range(letters2)
+		letters = set(letters)
+		rang = range(letters)
         
 		#declare a list for correct and incorrect guesses
 		correct = []
 		incorrect = []
-		#a guess would be the player's input
-		
-			guess = Hangman.player_input.get()
-			guess = guess.lower()
-#checks to make sure the player input is only one character long
-                if (range(guess) > 1 or range(guess) < 1):
-		    #if the guess is more than one character long then display
-			    #an error and ask to try again
-
-		#otherwise check to see if the guess is in the word
-                else:   			
+				
 
 			
 		#runs unitl the amount of letters in the correct list are the
 			#same amount of letters as the word being guessed
-                    if (range(correct) < rang):
-                        #checks to see if the player's input is in the list
-                        #this if statement runs the game while the player has lives left
-                        if (range(incorrect) < NumberOfLives):
+		#also only if the number of incorrect is less than amount of lives
+                    if(range(correct) < rang & range(incorrect) < NumberOfLives):
 					
                          #this part will check to see if the letter the player guessed is in the
 			 #word they are trying to guess
-                            if (guess in letters2):
+                         #ALSO
+                         #only adds the correct letter to the list if it not already
+			 #in the list of guessed letters
+                            if (characters in letters & characters not in correct[]):
 
-			    #only adds the correct letter to the list if it not already in
-			    #the list
-                                if (guess not in correct[]):
-				correct.append(guess)
+				correct.append(characters)
 				
 				#add function to  add the letters to the screen
+				
 				#add the correct letters to the gui as well as the number of times they occur
-				#use the format list.count() to count the number of occurneces
-				#this can be used in conjuction with the guess to display how many times the letter
+				#use the format list.count() to count the number of occurences
+				#this can be used in conjuction with the guess to
+				#display how many times the letter
 				#occurs in the word being guess
 				
                                 #Set green led to high(
 				#removes the correct guess from the list of guesses
 				#Keep the game image the same (do nothing)
-                            else:
-                                incorrect.append(guess)
-			
 				
-			else:
-			    #Reset the game with the same word
-								 
-                    #otherwise the count of the letters for the word being guessed
-                    #is zero and the word has been guessed completely
-                    else:
-										
+                          #if the letter is already in list of correct letters guessed then it won't count against them
+			    elif(charcters in letters & characters in correct[]):
+                                response = "You have already guessed this letter."
+                              
+                            else:
+                                incorrect.append(charcters)
+                                response = "Character not in word."
+                                #change the game image
+			
+		    #if the range of correct guesses equals rang (number of letters to be guessed) then all letters have been guessed	
+		    elif(range(correct) = rang):
+			  							
                         #the word should be removed from the dictionary so it can't be guessed again
-											 
-			#all the pins need to be reset
+			  							 
+			
 
-                       #the gui needs to let the player know that they have won
-                        #and needs to provide the dicitonary so the player can
-                    #choose which word the next team has to try to guess
+                       #the gui needs to let the player know that they have won and needs to provide the dicitonary so the player can
+                       #choose which word the next team has to try to guess
+                      
+								 
+                    #otherwise the player has had too many incorrect guessses and loses
+                    else:
+                        response = "You lose.  Maybe the next team will have better luck."
+                        #restart the game with the same word
+                        #reset the gui
 	
 ####################### MAIN FUNCTION that sets everything up #################
 
