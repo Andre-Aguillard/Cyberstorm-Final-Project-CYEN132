@@ -120,10 +120,11 @@ class Hangman(Frame):
 			 #in the list of guessed letters
                             if (characters in letters & characters not in correct[]):
 
-				correct.append(characters)
+					correct.append(characters)
 				
 				#add function to  add the letters to the screen
-				
+				#need to define this function
+					self.rightGuess()
 				#add the correct letters to the gui as well as the number of times they occur
 				#use the format list.count() to count the number of occurences
 				#this can be used in conjuction with the guess to
@@ -136,29 +137,26 @@ class Hangman(Frame):
 				
                           #if the letter is already in list of correct letters guessed then it won't count against them
 			    elif(charcters in letters & characters in correct[]):
-                                response = "You have already guessed this letter."
+                            		response = "You have already guessed this letter."
                               
                             else:
-                                incorrect.append(charcters)
-                                response = "Character not in word."
-                                #change the game image
+					#could use function called wrongGuess()
+                                	incorrect.append(charcters)
+                                	response = "Character not in word."
+                                	#change the game image
 			
 		    #if the range of correct guesses equals rang (number of letters to be guessed) then all letters have been guessed	
 		    elif(range(correct) = rang):
+				self.youWin()
 			  							
-                        #the word should be removed from the dictionary so it can't be guessed again
-			  							 
-			
-
+                        #the word should be removed from the dictionary so it can't be guessed agai
                        #the gui needs to let the player know that they have won and needs to provide the dicitonary so the player can
                        #choose which word the next team has to try to guess
                       
 								 
                     #otherwise the player has had too many incorrect guessses and loses
                     else:
-                        response = "You lose.  Maybe the next team will have better luck."
-                        #restart the game with the same word
-                        #reset the gui
+                        	self.gameOver()
 	
 ####################### MAIN FUNCTION that sets everything up #################
 
