@@ -1,6 +1,6 @@
 from Tkinter import *
 from time import sleep
-import RPi.GPIO as GPIO
+##import RPi.GPIO as GPIO
 
 
 class HangmanWords(object):
@@ -105,7 +105,7 @@ class Hangman(Frame):
         Hangman.img = Hangman.original.subsample(1,1)
         Hangman.image.config(image=Hangman.img)
         Hangman.image.image = Hangman.img
-
+    '''
     def setupGPIO(self):
         # Initialize the Raspberry Pi by disabeling any warnings and telling it
         # we're going to use the BCM pin numbering scheme.
@@ -113,7 +113,7 @@ class Hangman(Frame):
         GPIO.setmode(GPIO.BCM)
         # Initialize red and green led states
         # No guesses have been made, so set both pins low to start
-        GPIO.output(26, GPIO.LOW) '''Correct Guessed letter '''
+        GPIO.output(26, GPIO.LOW)#   Correct Guessed letter
         GPIO.output(13, GPIO.LOW)# Incorrect Guessed letter 
         
         # Initialize the number of lives LEDs here
@@ -121,6 +121,7 @@ class Hangman(Frame):
         pins = [21, 20, 16, 12, 19, 6, 5]  # list of GPIO pins for lights
         for x in range(0, NumberOfLives):
             GPIO.output(pins[x], GPIO.HIGH)
+    '''
 
 ##### Process Function that controls the flow of the program #######    
     def process(self, event):
@@ -162,14 +163,15 @@ class Hangman(Frame):
                         found = True
                         ''' So the guess is correct, that means the correct pin
                             lights up and the wrong pin turns off.'''
-                        GPIO.output(26, GPIO.HIGH)
-                        GPIO.output(13, GPIO.LOW)
+##                        GPIO.output(26, GPIO.HIGH)
+##                        GPIO.output(13, GPIO.LOW)
                 if (found == False):
                     #The guess was wrong, so the number of lives the user has left decreases,
                     # and the wrong guess pin lights up 
                     NumberOfLives -= 1
-                    GPIO.output(26, GPIO.LOW)
-                    GPIO.output(13, GPIO.HIGH)
+##                    GPIO.output(26, GPIO.LOW)
+##                    GPIO.output(13, GPIO.HIGH)
+                    updateHangmanImage()
                     
                     #function that changes the GPIO pins
                 #If the number of lives equals 0 then Game over
@@ -190,7 +192,7 @@ class Hangman(Frame):
         self.mainWord = self.mainWord.lower()
         print (self.mainWord)
         # Setup everything
-        self.setupGPIO
+##        self.setupGPIO
         self.setupGUI()
         self.setHangmanImage()
 
@@ -202,7 +204,20 @@ class Hangman(Frame):
 ##        #Calls the popup window with a list of words
 ##        x = PopUpWindow("star")
 ##        x.popupWindowWithScrollBar()
-        
+        response = "Welcome to the Death Star, recruit. I understand this is your first day with\n" \
+                    +"us, so I'll keep it brief.\n" \
+                    +"The Rebel Alliance has launched a ridiculous and foolhardy attack against our\n" \
+                    +"superior defense systems, and we need you to man the Ion Cannons on level B.\n" \
+                    +"The setup is simple, our engineers have made it so you only have to solve\n" \
+                    +"a game of Hangman in order to engage the auto-targeting system,\n" \
+                    +"if you get it wrong, well... don't.\n" \
+                    +"Anyway our defenses here are practically impenetrable, after all there'd have\n" \
+                    +"to be some fundamental flaw in the station for anything truly devastating\n" \
+                    +"to happen.\n\n" \
+                    +"Well off you go, type in any letter to begin."
+        display (response)
+        response =("Number of Lives: {} \nLetters guessed: {}").format(NumberOfLives, Hangman.lettersGuessed)
+        correctWordDisplay(response)
 
     def gameOver(self):
         response = "Game Over. You let the Rebel scum win..."
@@ -360,7 +375,7 @@ DEBUG = False
 # Set the number of lives the user has
 global NumberOfLives
 NumberOfLives = 3
-initialWord = "Strar"
+initialWord = "Stars"
 
 
 Images = ["DeathStar1.gif","DeathStar2.gif"]
