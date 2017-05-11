@@ -13,3 +13,8 @@ Team Members: Andre Aguillard, Rylan Burlison, Dax Henson
   The Final Project.py is our final piece of code to submit.       
   The GUI.py is the code for the GUI     
   The other .py files are places to work on the code.    
+
+### Screenshots:
+
+GUI Home screen:
+![Alt text](GUIcapture.png)
