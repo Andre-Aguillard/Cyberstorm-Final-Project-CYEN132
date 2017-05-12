@@ -1,15 +1,12 @@
 from Tkinter import *
 from time import sleep
-##import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 
 class HangmanWords(object):
     def __init__(self, name):
         self.name = name
 
-    def __str__(self):
-        # Number of letters in word
-        n = len(word)
     def populateWords(self):
         potentialWords = "Andromeda Antlia Apus Aquarius Aquila Ara Aries Auriga Bootes Caelum \
         Camelopardalis Cancer Capricornus Carina Cassiopeia Centaurus Cepheus Cetus Chamaeleon \
@@ -51,6 +48,7 @@ class Hangman(Frame):
         #Organize the GUI
         # this function works fine, as long as you have the images as actual GIFs
         self.pack(fill=BOTH, expand=1)
+        self.parent.bind_all("<Control_L>", self.helpMe)
         #setup the player input at the bottom of the GUI
         #widget is a Tkinter Entry
         #background is white; bind return key to function process in class
@@ -63,7 +61,7 @@ class Hangman(Frame):
         # widget is a Tkinter label
         # don't let image control width's size
         img = None
-        Hangman.image = Label(self, width=WIDTH / 2, height=HEIGHT, image = img)
+        Hangman.image = Label(self, width=WIDTH / 3, height=HEIGHT, image = img)
         Hangman.image.image = img
         Hangman.image.pack(side=LEFT, fill=Y)
         Hangman.image.pack_propagate(False)
@@ -98,14 +96,14 @@ class Hangman(Frame):
         Hangman.image.image = Hangman.img
 
     def updateHangmanImage(self):
-        x = NumberOfLives - 1
+        x = self.NumberOfLives - 1
         global Images
         Hangman.original = PhotoImage(file=Images[x])
         #resize the image to fit. 
         Hangman.img = Hangman.original.subsample(1,1)
         Hangman.image.config(image=Hangman.img)
         Hangman.image.image = Hangman.img
-    '''
+    
     def setupGPIO(self):
         # Initialize the Raspberry Pi by disabeling any warnings and telling it
         # we're going to use the BCM pin numbering scheme.
@@ -119,14 +117,11 @@ class Hangman(Frame):
         # Initialize the number of lives LEDs here
         # All of these should start lit up
         pins = [16,20,21,22,27,17,6]  # list of GPIO pins for lights
-        for x in range(0, NumberOfLives):
+        for x in range(0, self.NumberOfLives):
             GPIO.output(pins[x], GPIO.HIGH)
-    '''
 
 ##### Process Function that controls the flow of the program #######    
     def process(self, event):
-        #Access the global variable NumberOfLives
-        global NumberOfLives
         ### Word they are guessing
         g = self.mainWord
         # Prints something of the DEBUG variable is true
@@ -139,8 +134,13 @@ class Hangman(Frame):
         action = action.lower()
         found = False
 
-        #Makes sure that the user only guesses one letter
-        if (len(action) != 1):
+        #Makes sure that the user only guesses one letter not a number
+        if (action.isdigit() ):
+            response =("Please input only letters such as a,b,c etc...\n\n" \
+                       +"{} is a number...\n\n\n                    "\
+                       +"Don't let this mistake happen again.").format(action)        
+            display(response)
+        elif (len(action) != 1):
               response = "Please input only one character as your guess. Thank you."
               display(response)
               sleep(5)
@@ -152,6 +152,8 @@ class Hangman(Frame):
             else:
                 #Append the letter guessed to the list of Letters Guessed if it hasn't been guessed yet.
                 Hangman.lettersGuessed.append(action)
+                #Puts the list in alphabetical order
+                Hangman.lettersGuessed.sort()
                 
                 #Check to see if the player's input is in the the word
                 #Creates an index based off the nuber of letters in the word
@@ -163,36 +165,43 @@ class Hangman(Frame):
                         found = True
                         ''' So the guess is correct, that means the correct pin
                             lights up and the wrong pin turns off.'''
-##                        GPIO.output(26, GPIO.HIGH)
-##                        GPIO.output(13, GPIO.LOW)
+                        GPIO.output(26, GPIO.HIGH)
+                        GPIO.output(13, GPIO.LOW)
                 if (found == False):
                     #The guess was wrong, so the number of lives the user has left decreases,
                     # and the wrong guess pin lights up 
-                    NumberOfLives -= 1
-##                    GPIO.output(26, GPIO.LOW)
-##                    GPIO.output(13, GPIO.HIGH)
-                    updateHangmanImage()
+                    self.NumberOfLives -= 1
+                    GPIO.output(26, GPIO.LOW)
+                    GPIO.output(13, GPIO.HIGH)
+                    #Hangman.updateHangmanImage()
                     
                     #function that changes the GPIO pins
+                    
                 #If the number of lives equals 0 then Game over
-                if (NumberOfLives == 0):
+                if (self.NumberOfLives == 0):
                     self.gameOver()
-            
-        
-    
-        response =("Number of Lives: {} \nLetters guessed: {}").format(NumberOfLives, Hangman.lettersGuessed)
+                #If there are no more blanks in the list then they guessed the word correctly and won the game.
+                if ("__" not in Hangman.listOfBlanks):
+                    self.youWin()
+              
+        response =("Number of Lives: {} \nLetters guessed: {}").format(self.NumberOfLives, Hangman.lettersGuessed)
         correctWordDisplay(response)
         Hangman.player_input.delete(0, END)
         
 		
 ############## PLAY FUNCTION WHERE EVERYTHING Begins :) #######################        
     def play(self, unknownWord):
+        #Sets the inputed word as the main word the user tries to guess
         self.mainWord = unknownWord
         # Turns the inputed word into a lowercase word.
         self.mainWord = self.mainWord.lower()
-        print (self.mainWord)
+        # Set the number of lives the user has
+        self.NumberOfLives = 3
+        
+        if (DEBUG == True):
+            print (self.mainWord)
         # Setup everything
-##        self.setupGPIO
+        self.setupGPIO
         self.setupGUI()
         self.setHangmanImage()
 
@@ -201,10 +210,7 @@ class Hangman(Frame):
         #Starts of the game with a list of blanks for every letter in the word.
         Hangman.listOfBlanks = ["__" for x in self.mainWord]
         
-##        #Calls the popup window with a list of words
-##        x = PopUpWindow("star")
-##        x.popupWindowWithScrollBar()
-        response = "Welcome to the Death Star, recruit. I understand this is your first day with\n" \
+        response = "Imperial Officer:\n\nWelcome to the Death Star, recruit. I understand this is your first day with\n" \
                     +"us, so I'll keep it brief.\n" \
                     +"The Rebel Alliance has launched a ridiculous and foolhardy attack against our\n" \
                     +"superior defense systems, and we need you to man the Ion Cannons on level B.\n" \
@@ -214,12 +220,16 @@ class Hangman(Frame):
                     +"Anyway our defenses here are practically impenetrable, after all there'd have\n" \
                     +"to be some fundamental flaw in the station for anything truly devastating\n" \
                     +"to happen.\n\n" \
-                    +"Well off you go, type in any letter to begin."
+                    +"Well off you go, press F1 for help and type in any letter to begin Hangman."
         display (response)
-        response =("Number of Lives: {} \nLetters guessed: {}").format(NumberOfLives, Hangman.lettersGuessed)
+        response =("Number of Lives: {} \nLetters guessed: {}").format(self.NumberOfLives, Hangman.lettersGuessed)
         correctWordDisplay(response)
 
     def gameOver(self):
+        # Clear the entry widget so it don't display anything. 
+        Hangman.player_input.delete(0, END)
+        #Disable the entry so they can't keep typing in letters after they lose.
+        Hangman.player_input.config(state=DISABLED)
         response = "Game Over. You let the Rebel scum win..."
         display(response)
         window.update
@@ -230,16 +240,30 @@ class Hangman(Frame):
         display(response)
         self.updateHangmanImage()
     
-    def helpMe(self):
-        response =  "HELP SCREEN ---- type {} to exit. \n\n\n" \
+    def helpMe(self,please):
+        response =  "HELP SCREEN ---- type any letter to continue guessing. \n\n" \
                    +"This is a simple game of Hangman with an outer space twist. \n" \
                    +"You are an Imperial soldier working to protect the Empire's  latest "\
                    + "superweapon, The DeathStar! \n" +"Rebel fighters have emerged from "\
                    +"space to blow up this planetary threat, and you must stop them by " \
                    +"spelling the correct word within the time limit.\n\n" \
-                   +"Guess letters by typing them into the entry below."
+                   +"Guess letters by typing them into the entry below.\n" \
+                   +"Hint: think constellations."
         print(response)
-
+        display(response)
+        
+    def  youWin(self):
+        response = "Congragulations! You've managed to do your job correctly." \
+                   +"Unfortunately due to piracy in the Yavin sector there is a shortage\n" \
+                   +"of celebratory cookies, so we'll just give you a gold star sticker,\n" \
+                   +"Additionally, to reward your bravery, Grand Moff Tarkin has given you\n" \
+                   +"permission to select the next word.\n\nType in the number of the word\n" \
+                   +"into the popup window and hit accept."
+        display(response)
+        sleep(3)
+        #Calls the popup window with a list of words
+        x = PopUpWindow("star")
+        x.popupWindowWithScrollBar()
 
 
 class PopUpWindow(object):
@@ -268,11 +292,12 @@ class PopUpWindow(object):
 
             HangmanWord = PopUpWindow.dictOfWords[action]
             
-            Hangman.button = Button(PopUpWindow.top, text="Accept", width =WIDTH/3, command= lambda:newGame(HangmanWord))
+            Hangman.button = Button(PopUpWindow.top, text="Accept", padx=10, pady=15, width =150, command= lambda:newGame(HangmanWord))
             Hangman.button.pack(side=BOTTOM, fill=X)
             mainloop()
         else:
             print('invaild number')
+            display("Invalid Number")
         
     def popupWindowWithScrollBar(self):
         x = HangmanWords("Andre")
@@ -346,36 +371,33 @@ def correctWordDisplay(word):
         Hangman.correctWord.delete("1.0", END)
         # Display the desired text on the screen.
         Hangman.correctWord.insert(END, "Word you're trying to guess: " + "\n\n" +str(Hangman.listOfBlanks)+ "\n\n" + word)
-        print (word)
+        if (DEBUG == True):
+            print (word)
         Hangman.correctWord.config(state=DISABLED)
         #Updates the Tk window to show the progress of the locking sequence. 
         window.update()
-    
-    
 def display(response):
     #### Display is 
     Hangman.text.config(state=NORMAL)
     Hangman.text.delete("1.0", END)
     # Display the desired text on the screen.
     Hangman.text.insert(END, response)
-    print (response)
+    if (DEBUG == True):
+        print (response)
     Hangman.text.config(state=DISABLED)
     #Updates the Tk window to show the progress of the locking sequence. 
     window.update()
 
     
 # the default size of the GUI is 800x600
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1300
+HEIGHT = 500
 
 #Creates a Debug boolean
 # Set to True to turn on a debug process.
 DEBUG = False
 
-# Set the number of lives the user has
-global NumberOfLives
-NumberOfLives = 3
-initialWord = "Stars"
+initialWord = "Ophiuchus"
 
 
 Images = ["DeathStar1.gif","DeathStar2.gif"]
