@@ -318,10 +318,10 @@ class PopUpWindow(object):
             if (DEBUG == True):
                 print ("POPUP WINDOW: \n" + response)
             PopUpWindow.text.config(state=DISABLED)
-            del self.wordKeys[:]
             self.newWord()
 
     def newWord(self):
+        del self.wordKeys[:]
         PopUpWindow.top.destroy()
         self.popupWindowWithScrollBar()
 
