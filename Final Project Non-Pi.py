@@ -309,8 +309,17 @@ class PopUpWindow(object):
             Hangman.accept.pack(side=RIGHT, fill=Y)
             mainloop()
         else:
-            print('invaild number')
-            display("Invalid Number")
+            print('\n\nInvaild number' +str(number))
+            response = ("Invalid Number" + str(number))
+            PopUpWindow.text.config(state=NORMAL)
+            PopUpWindow.text.delete("1.0", END)
+            # Display the desired text on the screen.
+            PopUpWindow.text.insert(END, response)
+            if (DEBUG == True):
+                print ("POPUP WINDOW: \n" + response)
+            PopUpWindow.text.config(state=DISABLED)
+            del self.wordKeys[:]
+            self.newWord()
 
     def newWord(self):
         PopUpWindow.top.destroy()
@@ -322,8 +331,16 @@ class PopUpWindow(object):
         PopUpWindow.top = Toplevel()
         PopUpWindow.top.title("List of words:")
 
-        button_frame = LabelFrame(PopUpWindow.top,text="Buttons for user input" ,width= WIDTH/2, height=HEIGHT, relief =RAISED)
-        ##Define what each button looks like and does.
+        #Text_frame for popup window to display instructions.
+        PopUpWindow.text_frame = LabelFrame(PopUpWindow.top, text="Instructions" ,width= WIDTH/4, height=HEIGHT/4, relief =RAISED )
+        PopUpWindow.text = Text(PopUpWindow.text_frame, bg="lightgrey", state=DISABLED)
+        PopUpWindow.text.pack(fill=Y, expand=1)
+        
+        PopUpWindow.text_frame.pack(side=LEFT, fill=Y)
+        PopUpWindow.text_frame.pack_propagate(False)
+        
+        button_frame = LabelFrame(PopUpWindow.top,text="Buttons for user input" ,width= WIDTH/4, height=HEIGHT, relief =RAISED)
+        ##Define what each button looks like and does. 
         PopUpWindow.button1= Button(button_frame, text="1", padx=10, pady=10, width=10,command= lambda: self.inputNumber(1))
         PopUpWindow.button2= Button(button_frame, text="2", padx=10, pady=10, width=10,command= lambda: self.inputNumber(2))
         PopUpWindow.button3= Button(button_frame, text="3", padx=10, pady=10, width=10,command= lambda: self.inputNumber(3))
@@ -335,7 +352,7 @@ class PopUpWindow(object):
         PopUpWindow.button9= Button(button_frame, text="9", padx=10, pady=10, width=10,command= lambda: self.inputNumber(9))
         PopUpWindow.button0= Button(button_frame, text="0", padx=10, pady=10, width=10,command= lambda: self.inputNumber(0))
         PopUpWindow.buttonENTER= Button(button_frame, text="Enter", padx=10, pady=10, width=10,command= self.condenseNumber)
-
+        
         ##place the buttons in a grid within the button frame.
         PopUpWindow.button1.grid(row=0, column=0)
         PopUpWindow.button2.grid(row=0, column=1)
@@ -348,9 +365,9 @@ class PopUpWindow(object):
         PopUpWindow.button9.grid(row=2, column=2)
         PopUpWindow.button0.grid(row=3, column=1)
         PopUpWindow.buttonENTER.grid(row=3, column=2)
-
+        
         # initalize the button-frame, and don't let it control the frame's size
-        ## Place it on the right side and let it be full sized.
+        ## Place it on the bottom side and let it be full sized.         
         button_frame.pack(side=BOTTOM, fill=X, expand=1)
         button_frame.pack_propagate(False)
 
@@ -359,13 +376,34 @@ class PopUpWindow(object):
         scrollbar.pack(side=RIGHT, fill=Y)
 
         #Creates a listbox that holds all the potential words that could be guessed.
-        PopUpWindow.listbox = Listbox(PopUpWindow.top, yscrollcommand=scrollbar.set, width=100)
+        PopUpWindow.listbox = Listbox(PopUpWindow.top, yscrollcommand=scrollbar.set, width=50)
         #Put all the words from the dicttionary into the scrollbox
         for key,value in PopUpWindow.dictOfWords.items():
             PopUpWindow.listbox.insert(END, str(key) + "-->" + value)
-        PopUpWindow.listbox.pack(side=LEFT, fill=BOTH)
+        PopUpWindow.listbox.pack(side=TOP, fill=Y)
         # Place the scrollbar on the left and have it stay in view
         scrollbar.config(command=PopUpWindow.listbox.yview)
+
+        # Instructions text:
+        response =("Congragulations! You've managed to do\n" \
+                   "your job correctly. Unfortunately due\n" \
+                   +"to piracy in the Yavin sector there is\n"
+                   +"a shortage of celebratory cookies, so\n"\
+                   +"we'll just give you a gold star.\n\n" \
+                   +"Additionally, to reward your bravery,\n" \
+                   +"Grand Moff Tarkin has given you\n" \
+                   +"permission to select the next word.\n" \
+                   +"\n\nType in the number of the word\n" \
+                   +"into the popup window and hit accept.")
+        
+        #Input instructions into the text_frame
+        PopUpWindow.text.config(state=NORMAL)
+        PopUpWindow.text.delete("1.0", END)
+        # Display the desired text on the screen.
+        PopUpWindow.text.insert(END, response)
+        if (DEBUG == True):
+            print ("POPUP WINDOW: \n" + response)
+        PopUpWindow.text.config(state=DISABLED)
 
     def inputNumber(self,number):
         number = str(number)
