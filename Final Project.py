@@ -99,7 +99,11 @@ class Hangman(Frame):
         if (self.NumberOfLives == 0):
             x = len(Images) - 1
         else:
-            x = len(Images)-self.NumberOfLives
+            x = len(Images)-self.NumberOfLives-1
+            if (DEBUG is True):
+                print self.NumberOfLives
+                print x
+                print Images[x]
             if (x > len(Images) - 1):
                 x = len(Images) - 1
         Hangman.original = PhotoImage(file=Images[x])
@@ -147,7 +151,7 @@ class Hangman(Frame):
                        +"{} is a symbol...\n\n\n                    "\
                        +"Don't let this mistake happen again.").format(action)
             display(response)
-        if (action.isdigit() ):
+        if (action.isdigit()):
             response =("Please input only letters such as a,b,c etc...\n\n" \
                        +"{} is a number...\n\n\n                    "\
                        +"Don't let this mistake happen again.").format(action)
@@ -185,9 +189,10 @@ class Hangman(Frame):
                     pins = [16,20,21,22,27,17,6]
                     for x in range(0, self.NumberOfLives):
                         GPIO.output(pins[x], GPIO.LOW)
-                        
+
                     self.NumberOfLives -= 1
-                    
+                    if (self.NumberOfLives < 0):
+                        self.NumberOfLives = 0
                     for x in range(0, self.NumberOfLives):
                         GPIO.output(pins[x], GPIO.HIGH)
                     GPIO.output(26, GPIO.LOW)
@@ -257,6 +262,9 @@ class Hangman(Frame):
                     \n\nOh well. Looks like we'll have to build another\n" \
                     +"one. Hopefully you can keep that in one piece."
         display(response)
+        sleep(10)
+        restartGame(self.mainWord)
+
         #self.updateHangmanImage()
 
     def helpMe(self,please):
@@ -272,15 +280,7 @@ class Hangman(Frame):
         display(response)
 
     def  youWin(self):
-        response = "Congragulations! You've managed to do your job correctly." \
-                   +"Unfortunately due to piracy in the Yavin sector there is a shortage\n" \
-                   +"of celebratory cookies, so we'll just give you a gold star sticker,\n" \
-                   +"Additionally, to reward your bravery, Grand Moff Tarkin has given you\n" \
-                   +"permission to select the next word.\n\nType in the number of the word\n" \
-                   +"into the popup window and hit accept."
-        display(response)
-        sleep(3)
-        #Calls the popup window with a list of words
+        #Calls the popup window with a list of words and the victory message
         x = PopUpWindow("star")
         x.popupWindowWithScrollBar()
 
@@ -298,7 +298,7 @@ class PopUpWindow(object):
         if (action in PopUpWindow.dictOfWords):
             PopUpWindow.top.destroy()
             PopUpWindow.top = Toplevel()
-            PopUpWindow.top.title("You chose: ")
+            PopUpWindow.top.title("You chose: {}".format(PopUpWindow.dictOfWords[action]))
 
             text_frame = Frame(PopUpWindow.top, width=WIDTH / 2, height=(HEIGHT*(2/3)))
             # widget - same deal as above
@@ -311,12 +311,21 @@ class PopUpWindow(object):
 
             HangmanWord = PopUpWindow.dictOfWords[action]
 
-            Hangman.button = Button(PopUpWindow.top, text="Accept", padx=10, pady=15, width =150, command= lambda:newGame(HangmanWord))
-            Hangman.button.pack(side=BOTTOM, fill=X)
+            Hangman.accept = Button(PopUpWindow.top, text="Accept", padx=10, pady=15, width =15, command= lambda:newGame(HangmanWord))
+            Hangman.accept.pack(side=LEFT, fill=Y)
+            Hangman.accept = Button(PopUpWindow.top, text="Deny", padx=10, pady=15, width =15, command= lambda:self.newWord())
+            Hangman.accept.pack(side=RIGHT, fill=Y)
             mainloop()
         else:
-            print('invaild number')
-            display("Invalid Number")
+            print('\n\nInvaild number' +str(number))
+            response = ("Invalid Number: " + str(number))
+            display(response)
+            self.newWord()
+
+    def newWord(self):
+        del self.wordKeys[:]
+        PopUpWindow.top.destroy()
+        self.popupWindowWithScrollBar()
 
     def popupWindowWithScrollBar(self):
         x = HangmanWords("Andre")
@@ -324,7 +333,15 @@ class PopUpWindow(object):
         PopUpWindow.top = Toplevel()
         PopUpWindow.top.title("List of words:")
 
-        button_frame = LabelFrame(PopUpWindow.top,text="Buttons for user input" ,width= WIDTH/2, height=HEIGHT, relief =RAISED)
+        #Text_frame for popup window to display instructions.
+        PopUpWindow.text_frame = LabelFrame(PopUpWindow.top, text="Instructions" ,width= WIDTH/4, height=HEIGHT/4, relief =RAISED )
+        PopUpWindow.text = Text(PopUpWindow.text_frame, bg="lightgrey", state=DISABLED)
+        PopUpWindow.text.pack(fill=Y, expand=1)
+
+        PopUpWindow.text_frame.pack(side=LEFT, fill=Y)
+        PopUpWindow.text_frame.pack_propagate(False)
+
+        button_frame = LabelFrame(PopUpWindow.top,text="Buttons for user input" ,width= WIDTH/4, height=HEIGHT, relief =RAISED)
         ##Define what each button looks like and does.
         PopUpWindow.button1= Button(button_frame, text="1", padx=10, pady=10, width=10,command= lambda: self.inputNumber(1))
         PopUpWindow.button2= Button(button_frame, text="2", padx=10, pady=10, width=10,command= lambda: self.inputNumber(2))
@@ -352,7 +369,7 @@ class PopUpWindow(object):
         PopUpWindow.buttonENTER.grid(row=3, column=2)
 
         # initalize the button-frame, and don't let it control the frame's size
-        ## Place it on the right side and let it be full sized.
+        ## Place it on the bottom side and let it be full sized.
         button_frame.pack(side=BOTTOM, fill=X, expand=1)
         button_frame.pack_propagate(False)
 
@@ -361,13 +378,34 @@ class PopUpWindow(object):
         scrollbar.pack(side=RIGHT, fill=Y)
 
         #Creates a listbox that holds all the potential words that could be guessed.
-        PopUpWindow.listbox = Listbox(PopUpWindow.top, yscrollcommand=scrollbar.set, width=100)
+        PopUpWindow.listbox = Listbox(PopUpWindow.top, yscrollcommand=scrollbar.set, width=50)
         #Put all the words from the dicttionary into the scrollbox
         for key,value in PopUpWindow.dictOfWords.items():
             PopUpWindow.listbox.insert(END, str(key) + "-->" + value)
-        PopUpWindow.listbox.pack(side=LEFT, fill=BOTH)
+        PopUpWindow.listbox.pack(side=TOP, fill=Y)
         # Place the scrollbar on the left and have it stay in view
         scrollbar.config(command=PopUpWindow.listbox.yview)
+
+        # Instructions text:
+        response =("Congratulations! You've managed to do\n" \
+                   "your job correctly. Unfortunately due\n" \
+                   +"to piracy in the Yavin sector there is\n"
+                   +"a shortage of celebratory cookies, so\n"\
+                   +"we'll just give you a gold star.\n\n" \
+                   +"Additionally, to reward your bravery,\n" \
+                   +"Grand Moff Tarkin has given you\n" \
+                   +"permission to select the next word.\n" \
+                   +"\n\nType in the number of the word\n" \
+                   +"into the popup window and hit accept.")
+
+        #Input instructions into the text_frame
+        PopUpWindow.text.config(state=NORMAL)
+        PopUpWindow.text.delete("1.0", END)
+        # Display the desired text on the screen.
+        PopUpWindow.text.insert(END, response)
+        if (DEBUG == True):
+            print ("POPUP WINDOW: \n" + response)
+        PopUpWindow.text.config(state=DISABLED)
 
     def inputNumber(self,number):
         number = str(number)
@@ -385,6 +423,11 @@ def newGame(HangmanWord):
     t = Hangman(window)
     t.play(HangmanWord)
 
+def restartGame(sameWord):
+    global t
+    t.destroy()
+    t = Hangman(window)
+    t.play(sameWord)
 def correctWordDisplay(word):
         Hangman.correctWord.config(state=NORMAL)
         Hangman.correctWord.delete("1.0", END)

@@ -112,21 +112,26 @@ class Hangman(Frame):
         Hangman.image.config(image=Hangman.img)
         Hangman.image.image = Hangman.img
 
+    '''
     def setupGPIO(self):
         # Initialize the Raspberry Pi by disabeling any warnings and telling it
         # we're going to use the BCM pin numbering scheme.
-        #GPIO.setwarnings(False)
-        #GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(13, GPIO.OUT)
+        GPIO.setup(26, GPIO.OUT)
         # Initialize red and green led states
         # No guesses have been made, so set both pins low to start
-        #GPIO.output(26, GPIO.LOW)#   Correct Guessed letter
-        #GPIO.output(13, GPIO.LOW)# Incorrect Guessed letter
+        GPIO.output(26, GPIO.LOW)#   Correct Guessed letter
+        GPIO.output(13, GPIO.LOW)# Incorrect Guessed letter
 
         # Initialize the number of lives LEDs here
         # All of these should start lit up
         pins = [16,20,21,22,27,17,6]  # list of GPIO pins for lights
-        #for x in range(0, self.NumberOfLives):
-            #GPIO.output(pins[x], GPIO.HIGH)
+        for x in range(0, self.NumberOfLives):
+            GPIO.setup(pins[x], GPIO.OUT)
+            GPIO.output(pins[x], GPIO.HIGH)
+            '''
 
 ##### Process Function that controls the flow of the program #######
     def process(self, event):
@@ -183,9 +188,15 @@ class Hangman(Frame):
                 if (found == False):
                     #The guess was wrong, so the number of lives the user has left decreases,
                     # and the wrong guess pin lights up
+                    #pins = [16,20,21,22,27,17,6]
+                    #for x in range(0, self.NumberOfLives):
+                        #GPIO.output(pins[x], GPIO.LOW)
+
                     self.NumberOfLives -= 1
                     if (self.NumberOfLives < 0):
                         self.NumberOfLives = 0
+                    #for x in range(0, self.NumberOfLives):
+                        #GPIO.output(pins[x], GPIO.HIGH)
                     #GPIO.output(26, GPIO.LOW)
                     #GPIO.output(13, GPIO.HIGH)
                     self.updateHangmanImage()
@@ -216,7 +227,7 @@ class Hangman(Frame):
         if (DEBUG == True):
             print (self.mainWord)
         # Setup everything
-        self.setupGPIO
+        #self.setupGPIO
         self.setupGUI()
         self.setHangmanImage()
 
@@ -448,7 +459,7 @@ HEIGHT = 500
 
 #Creates a Debug boolean
 # Set to True to turn on a debug process.
-DEBUG = True
+DEBUG = False
 
 initialWord = "Ara"
 
