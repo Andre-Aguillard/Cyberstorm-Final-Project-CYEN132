@@ -403,7 +403,7 @@ HEIGHT = 500
 # Set to True to turn on a debug process.
 DEBUG = False
 
-initialWord = "Ophiuchus"
+initialWord = "Ara"
 
 
 Images = ["images\DeathStar1.gif", "images\DeathStar3.gif",
