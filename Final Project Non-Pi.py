@@ -139,7 +139,12 @@ class Hangman(Frame):
         found = False
 
         #Makes sure that the user only guesses one letter not a number
-        if (action.isdigit() ):
+        if (action.isalnum() is False):
+            response =("Please input only letters such as a,b,c etc...\n\n" \
+                       +"{} is a symbol...\n\n\n                    "\
+                       +"Don't let this mistake happen again.").format(action)
+            display(response)
+        if (action.isdigit()):
             response =("Please input only letters such as a,b,c etc...\n\n" \
                        +"{} is a number...\n\n\n                    "\
                        +"Don't let this mistake happen again.").format(action)
