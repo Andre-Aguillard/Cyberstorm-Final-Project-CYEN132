@@ -8,16 +8,16 @@ class HangmanWords(object):
         self.name = name
 
     def populateWords(self):
-        potentialWords = "Andromeda Antlia Apus Aquarius Aquila Ara Aries Auriga Bootes Caelum \
-        Camelopardalis Cancer Capricornus Carina Cassiopeia Centaurus Cepheus Cetus Chamaeleon \
-        Circinus Columba Corvus Crater Crux Cygnus Delphinus Dorado Draco Equuleus Eridanus \
-        Fornax Gemini Grus Hercules Horologium Hydra Hydrus Indus Lacerta Leo \
-        Lepus Libra Lupus Lynx Lyra Mensa Microscopium Monoceros \
-        Musca Norma Octans Ophiuchus Orion Pavo Pegasus Perseus Phoenix \
-        Pictor Pisces Puppis Pyxis Reticulum Sagitta \
-        Sagittarius Scorpius Sculptor Scutum Serpens Sextans Taurus \
-        Telescopium Triangulum Tucana \
-        Vela Virgo Volans Vulpecula".split()
+        potentialWords = "Andromeda Antlia Apus Aquarius Aquila Ara Aries \
+        Auriga Bootes Caelum Camelopardalis Cancer Capricornus Carina \
+        Cassiopeia Centaurus Cepheus Cetus Chamaeleon Circinus Columba Corvus \
+        Crater Crux Cygnus Delphinus Dorado Draco Equuleus Eridanus Fornax \
+        Gemini Grus Hercules Horologium Hydra Hydrus Indus Lacerta Leo Lepus \
+        Libra Lupus Lynx Lyra Mensa Microscopium Monoceros Musca Norma Octans \
+        Ophiuchus Orion Pavo Pegasus Perseus Phoenix Pictor Pisces Puppis \
+        Pyxis Reticulum Sagitta Sagittarius Scorpius Sculptor Scutum Serpens \
+        Sextans Taurus Telescopium Triangulum Tucana Vela Virgo Volans \
+        Vulpecula".split()
 
         dictOfWords = {x:potentialWords[x] for x in range(0, len(potentialWords))}
 
