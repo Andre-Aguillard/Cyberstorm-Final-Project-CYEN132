@@ -118,7 +118,7 @@ class Hangman(Frame):
         
         # Initialize the number of lives LEDs here
         # All of these should start lit up
-        pins = [21, 20, 16, 12, 19, 6, 5]  # list of GPIO pins for lights
+        pins = [16,20,21,22,27,17,6]  # list of GPIO pins for lights
         for x in range(0, NumberOfLives):
             GPIO.output(pins[x], GPIO.HIGH)
     '''
