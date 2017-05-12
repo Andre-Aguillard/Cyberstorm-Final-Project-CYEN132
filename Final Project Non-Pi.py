@@ -99,7 +99,11 @@ class Hangman(Frame):
         if (self.NumberOfLives == 0):
             x = len(Images) - 1
         else:
-            x = len(Images)-self.NumberOfLives
+            x = len(Images)-self.NumberOfLives-1
+            if (DEBUG is True):
+                print self.NumberOfLives
+                print x
+                print Images[x]
             if (x > len(Images) - 1):
                 x = len(Images) - 1
         Hangman.original = PhotoImage(file=Images[x])
@@ -249,6 +253,9 @@ class Hangman(Frame):
                     \n\nOh well. Looks like we'll have to build another\n" \
                     +"one. Hopefully you can keep that in one piece."
         display(response)
+        sleep(10)
+        restartGame(self.mainWord)
+
         #self.updateHangmanImage()
 
     def helpMe(self,please):
@@ -264,15 +271,7 @@ class Hangman(Frame):
         display(response)
 
     def  youWin(self):
-        response = "Congragulations! You've managed to do your job correctly." \
-                   +"Unfortunately due to piracy in the Yavin sector there is a shortage\n" \
-                   +"of celebratory cookies, so we'll just give you a gold star sticker,\n" \
-                   +"Additionally, to reward your bravery, Grand Moff Tarkin has given you\n" \
-                   +"permission to select the next word.\n\nType in the number of the word\n" \
-                   +"into the popup window and hit accept."
-        display(response)
-        sleep(3)
-        #Calls the popup window with a list of words
+        #Calls the popup window with a list of words and the victory message
         x = PopUpWindow("star")
         x.popupWindowWithScrollBar()
 
@@ -310,14 +309,8 @@ class PopUpWindow(object):
             mainloop()
         else:
             print('\n\nInvaild number' +str(number))
-            response = ("Invalid Number" + str(number))
-            PopUpWindow.text.config(state=NORMAL)
-            PopUpWindow.text.delete("1.0", END)
-            # Display the desired text on the screen.
-            PopUpWindow.text.insert(END, response)
-            if (DEBUG == True):
-                print ("POPUP WINDOW: \n" + response)
-            PopUpWindow.text.config(state=DISABLED)
+            response = ("Invalid Number: " + str(number))
+            display(response)
             self.newWord()
 
     def newWord(self):
@@ -335,12 +328,12 @@ class PopUpWindow(object):
         PopUpWindow.text_frame = LabelFrame(PopUpWindow.top, text="Instructions" ,width= WIDTH/4, height=HEIGHT/4, relief =RAISED )
         PopUpWindow.text = Text(PopUpWindow.text_frame, bg="lightgrey", state=DISABLED)
         PopUpWindow.text.pack(fill=Y, expand=1)
-        
+
         PopUpWindow.text_frame.pack(side=LEFT, fill=Y)
         PopUpWindow.text_frame.pack_propagate(False)
-        
+
         button_frame = LabelFrame(PopUpWindow.top,text="Buttons for user input" ,width= WIDTH/4, height=HEIGHT, relief =RAISED)
-        ##Define what each button looks like and does. 
+        ##Define what each button looks like and does.
         PopUpWindow.button1= Button(button_frame, text="1", padx=10, pady=10, width=10,command= lambda: self.inputNumber(1))
         PopUpWindow.button2= Button(button_frame, text="2", padx=10, pady=10, width=10,command= lambda: self.inputNumber(2))
         PopUpWindow.button3= Button(button_frame, text="3", padx=10, pady=10, width=10,command= lambda: self.inputNumber(3))
@@ -352,7 +345,7 @@ class PopUpWindow(object):
         PopUpWindow.button9= Button(button_frame, text="9", padx=10, pady=10, width=10,command= lambda: self.inputNumber(9))
         PopUpWindow.button0= Button(button_frame, text="0", padx=10, pady=10, width=10,command= lambda: self.inputNumber(0))
         PopUpWindow.buttonENTER= Button(button_frame, text="Enter", padx=10, pady=10, width=10,command= self.condenseNumber)
-        
+
         ##place the buttons in a grid within the button frame.
         PopUpWindow.button1.grid(row=0, column=0)
         PopUpWindow.button2.grid(row=0, column=1)
@@ -365,9 +358,9 @@ class PopUpWindow(object):
         PopUpWindow.button9.grid(row=2, column=2)
         PopUpWindow.button0.grid(row=3, column=1)
         PopUpWindow.buttonENTER.grid(row=3, column=2)
-        
+
         # initalize the button-frame, and don't let it control the frame's size
-        ## Place it on the bottom side and let it be full sized.         
+        ## Place it on the bottom side and let it be full sized.
         button_frame.pack(side=BOTTOM, fill=X, expand=1)
         button_frame.pack_propagate(False)
 
@@ -385,7 +378,7 @@ class PopUpWindow(object):
         scrollbar.config(command=PopUpWindow.listbox.yview)
 
         # Instructions text:
-        response =("Congragulations! You've managed to do\n" \
+        response =("Congratulations! You've managed to do\n" \
                    "your job correctly. Unfortunately due\n" \
                    +"to piracy in the Yavin sector there is\n"
                    +"a shortage of celebratory cookies, so\n"\
@@ -395,7 +388,7 @@ class PopUpWindow(object):
                    +"permission to select the next word.\n" \
                    +"\n\nType in the number of the word\n" \
                    +"into the popup window and hit accept.")
-        
+
         #Input instructions into the text_frame
         PopUpWindow.text.config(state=NORMAL)
         PopUpWindow.text.delete("1.0", END)
@@ -421,6 +414,11 @@ def newGame(HangmanWord):
     t = Hangman(window)
     t.play(HangmanWord)
 
+def restartGame(sameWord):
+    global t
+    t.destroy()
+    t = Hangman(window)
+    t.play(sameWord)
 def correctWordDisplay(word):
         Hangman.correctWord.config(state=NORMAL)
         Hangman.correctWord.delete("1.0", END)
@@ -450,7 +448,7 @@ HEIGHT = 500
 
 #Creates a Debug boolean
 # Set to True to turn on a debug process.
-DEBUG = False
+DEBUG = True
 
 initialWord = "Ara"
 
