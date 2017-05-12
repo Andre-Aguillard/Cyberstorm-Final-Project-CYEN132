@@ -2,7 +2,6 @@ from Tkinter import *
 from time import sleep
 import RPi.GPIO as GPIO
 
-
 class HangmanWords(object):
     def __init__(self, name):
         self.name = name
@@ -220,7 +219,7 @@ class Hangman(Frame):
                     +"Anyway our defenses here are practically impenetrable, after all there'd have\n" \
                     +"to be some fundamental flaw in the station for anything truly devastating\n" \
                     +"to happen.\n\n" \
-                    +"Well off you go, press F1 for help and type in any letter to begin Hangman."
+                    +"Well off you go, press Ctrl for help and type in any letter to begin Hangman."
         display (response)
         response =("Number of Lives: {} \nLetters guessed: {}").format(self.NumberOfLives, Hangman.lettersGuessed)
         correctWordDisplay(response)
@@ -247,7 +246,8 @@ class Hangman(Frame):
                    + "superweapon, The DeathStar! \n" +"Rebel fighters have emerged from "\
                    +"space to blow up this planetary threat, and you must stop them by " \
                    +"spelling the correct word within the time limit.\n\n" \
-                   +"Guess letters by typing them into the entry below.\n" \
+                   +"Guess letters one at a time by typing them into the entry blank at the "\
+		   +"bottom of the window and pressing enter.\n" \
                    +"Hint: think constellations."
         print(response)
         display(response)
