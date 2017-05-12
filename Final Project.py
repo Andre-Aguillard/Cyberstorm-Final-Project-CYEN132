@@ -19,7 +19,7 @@ class HangmanWords(object):
         Sextans Taurus Telescopium Triangulum Tucana Vela Virgo Volans \
         Vulpecula".split()
 
-        dictOfWords = {x:potentialWords[x] for x in range(0, len(potentialWords))}
+        dictOfWords = {x: potentialWords[x] for x in range(0, len(potentialWords))}
 
         return(dictOfWords)
 
@@ -30,28 +30,30 @@ class Hangman(Frame):
         # calls constructor in superclass
         Frame.__init__(self, parent)  # This sets up the main window of the GUI
         self.parent = parent          # in order to build widgets on to top it.
-        self.images =[]
+        self.images = []
 
     # image getter
     @property
     def images(self):
         return self._images
+
     # image setter
     @images.setter
     def images(self, value):
         self._images = value
-    ## Add image function to easily change the image
-    def addImage (self, image):
+
+    # Add image function to easily change the image
+    def addImage(self, image):
         self._images.append(image)
 
-    def setupGUI(self): ##Initializes the layout for the GUI
-        #Organize the GUI
-        # this function works fine, as long as you have the images as actual GIFs
+    def setupGUI(self):  # Initializes the layout for the GUI
+        # Organize the GUI
+        # this function works fine, as long as the images are .gif format
         self.pack(fill=BOTH, expand=1)
         self.parent.bind_all("<Control_L>", self.helpMe)
-        #setup the player input at the bottom of the GUI
-        #widget is a Tkinter Entry
-        #background is white; bind return key to function process in class
+        # setup the player input at the bottom of the GUI
+        # widget is a Tkinter Entry
+        # background is white; bind return key to function process in class
         Hangman.player_input = Entry(self, bg="white")
         Hangman.player_input.bind("<Return>", self.process)
         Hangman.player_input.pack(side=BOTTOM, fill=X)
@@ -61,7 +63,7 @@ class Hangman(Frame):
         # widget is a Tkinter label
         # don't let image control width's size
         img = None
-        Hangman.image = Label(self, width=WIDTH / 3, height=HEIGHT, image = img)
+        Hangman.image = Label(self, width=WIDTH / 3, height=HEIGHT, image=img)
         Hangman.image.image = img
         Hangman.image.pack(side=LEFT, fill=Y)
         Hangman.image.pack_propagate(False)
@@ -77,20 +79,20 @@ class Hangman(Frame):
         text_frame.pack_propagate(False)
 
         # Make another frame to hold the correct guess/ word display
-        word_frame = Frame(self, width= WIDTH/3, height = HEIGHT/2)
+        word_frame = Frame(self, width=WIDTH/3, height=HEIGHT/2)
         # widget - same deal as above
         # disable by default
         # don't let it control frame's size
         Hangman.correctWord = Text(word_frame, bg="white", state=DISABLED)
-        Hangman.correctWord.pack(fill=Y, expand = 1)
-        word_frame.pack(side =TOP, fill=X)
+        Hangman.correctWord.pack(fill=Y, expand=1)
+        word_frame.pack(side=TOP, fill=X)
         word_frame.pack_propagate(False)
 
     def setHangmanImage(self):
         global Images
         Hangman.original = PhotoImage(file=Images[0])
-        #resize the image to fit.
-        Hangman.img = Hangman.original.subsample(2,2)
+        # resize the image to fit.
+        Hangman.img = Hangman.original.subsample(2, 2)
         # Note: Subsample is used to make the image smaller, zoom is to make it bigger.
         Hangman.image.config(image=Hangman.img)
         Hangman.image.image = Hangman.img
@@ -107,8 +109,8 @@ class Hangman(Frame):
             if (x > len(Images) - 1):
                 x = len(Images) - 1
         Hangman.original = PhotoImage(file=Images[x])
-        #resize the image to fit.
-        Hangman.img = Hangman.original.subsample(1,1)
+        # resize the image to fit.
+        Hangman.img = Hangman.original.subsample(2, 2)
         Hangman.image.config(image=Hangman.img)
         Hangman.image.image = Hangman.img
 
@@ -121,8 +123,8 @@ class Hangman(Frame):
         GPIO.setup(26, GPIO.OUT)
         # Initialize red and green led states
         # No guesses have been made, so set both pins low to start
-        GPIO.output(26, GPIO.LOW)#   Correct Guessed letter
-        GPIO.output(13, GPIO.LOW)# Incorrect Guessed letter
+        GPIO.output(26, GPIO.LOW)  # Correct Guessed letter
+        GPIO.output(13, GPIO.LOW)  # Incorrect Guessed letter
 
         # Initialize the number of lives LEDs here
         # All of these should start lit up
@@ -225,7 +227,7 @@ class Hangman(Frame):
         if (DEBUG == True):
             print (self.mainWord)
         # Setup everything
-        self.setupGPIO
+        self.setupGPIO()
         self.setupGUI()
         self.setHangmanImage()
 
@@ -234,8 +236,8 @@ class Hangman(Frame):
         #Starts of the game with a list of blanks for every letter in the word.
         Hangman.listOfBlanks = ["__" for x in self.mainWord]
 
-        response = "Imperial Officer:\n\nWelcome to the Death Star, recruit. I understand this is your first day with\n" \
-                    +"us, so I'll keep it brief.\n" \
+        response = "Imperial Officer:\n\nWelcome to the Death Star, recruit. I understand this is your firs\n" \
+                    +"day with us, so I'll keep it brief.\n" \
                     +"The Rebel Alliance has launched a ridiculous and foolhardy attack against our\n" \
                     +"superior defense systems, and we need you to man the Ion Cannons on level B.\n" \
                     +"The setup is simple, our engineers have made it so you only have to solve\n" \
@@ -452,8 +454,8 @@ def display(response):
 
 
 # the default size of the GUI is 800x600
-WIDTH = 1300
-HEIGHT = 500
+WIDTH = 960
+HEIGHT = 385
 
 #Creates a Debug boolean
 # Set to True to turn on a debug process.
