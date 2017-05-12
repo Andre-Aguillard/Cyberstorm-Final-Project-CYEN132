@@ -290,7 +290,7 @@ class PopUpWindow(object):
         if (action in PopUpWindow.dictOfWords):
             PopUpWindow.top.destroy()
             PopUpWindow.top = Toplevel()
-            PopUpWindow.top.title("You chose: ")
+            PopUpWindow.top.title("You chose: {}".format(PopUpWindow.dictOfWords[action]))
 
             text_frame = Frame(PopUpWindow.top, width=WIDTH / 2, height=(HEIGHT*(2/3)))
             # widget - same deal as above
@@ -303,12 +303,18 @@ class PopUpWindow(object):
 
             HangmanWord = PopUpWindow.dictOfWords[action]
 
-            Hangman.button = Button(PopUpWindow.top, text="Accept", padx=10, pady=15, width =150, command= lambda:newGame(HangmanWord))
-            Hangman.button.pack(side=BOTTOM, fill=X)
+            Hangman.accept = Button(PopUpWindow.top, text="Accept", padx=10, pady=15, width =15, command= lambda:newGame(HangmanWord))
+            Hangman.accept.pack(side=LEFT, fill=Y)
+            Hangman.accept = Button(PopUpWindow.top, text="Deny", padx=10, pady=15, width =15, command= lambda:self.newWord())
+            Hangman.accept.pack(side=RIGHT, fill=Y)
             mainloop()
         else:
             print('invaild number')
             display("Invalid Number")
+
+    def newWord(self):
+        PopUpWindow.top.destroy()
+        self.popupWindowWithScrollBar()
 
     def popupWindowWithScrollBar(self):
         x = HangmanWords("Andre")
