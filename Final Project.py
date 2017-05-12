@@ -110,6 +110,8 @@ class Hangman(Frame):
         GPIO.setmode(GPIO.BCM)
         # Initialize red and green led states
         # No guesses have been made, so set both pins low to start
+	GPIO.setup(26, GPIO.OUT)
+	GPIO.setup(13, GPIO.OUT)
         GPIO.output(26, GPIO.LOW)#   Correct Guessed letter
         GPIO.output(13, GPIO.LOW)# Incorrect Guessed letter 
         
@@ -117,6 +119,7 @@ class Hangman(Frame):
         # All of these should start lit up
         pins = [16,20,21,22,27,17,6]  # list of GPIO pins for lights
         for x in range(0, self.NumberOfLives):
+	    GPIO.setup(pins[x], GPIO.OUT)
             GPIO.output(pins[x], GPIO.HIGH)
 
 ##### Process Function that controls the flow of the program #######    
