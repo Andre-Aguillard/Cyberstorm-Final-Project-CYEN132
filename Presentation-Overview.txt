@@ -40,5 +40,9 @@ Future Development:
     user knows it. Additionally, we could create different themed versions of the game, or create a function wich kept score such as
     recording the number of words guessed correctly.  #FIXME
 Lessons Learned:
-    Dax - I learned that it's very difficult to know how an entire program works line by line, which is why it takes teams to build large programs. I imagine some of this could be alieved with superior code organization theory.
+    Dax - I learned that it's very difficult to know how an entire program works line by line, which is why it takes teams to build 
+          large programs. I imagine some of this could be alieved with superior code organization theory.
+    Andre - I learned that working on a team based coding project is much more enjoyable than doing one by yourself. With multiple
+            people giving input and coming up with solutions to various issues and weird quirks in the code, a lot is able to be 
+            accomplished with the combined skill and precision of the team.
     #FIXME
