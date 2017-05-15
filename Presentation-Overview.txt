@@ -34,15 +34,16 @@ Demonstration:
 Cyber Storm:
     Cyberstorm seemed pretty successful. 7 out of 8 teams showed up; 5 won, and 2 lost. Some had an easy time, while some were 
     thoroughly frustrated with the previous team's word selection. The challenge was worth 10,000 pts and all teams were given an 
-    opportunity to complete the challenge while it was open. #FIXME
+    opportunity to complete the challenge while it was open. 
 Future Development:
     There are some other features that could be added, like support for spaces, or the ability to input the entire word at once if the
     user knows it. Additionally, we could create different themed versions of the game, or create a function wich kept score such as
-    recording the number of words guessed correctly.  #FIXME
+    recording the number of words guessed correctly.  
 Lessons Learned:
     Dax - I learned that it's very difficult to know how an entire program works line by line, which is why it takes teams to build 
           large programs. I imagine some of this could be alieved with superior code organization theory.
     Andre - I learned that working on a team based coding project is much more enjoyable than doing one by yourself. With multiple
             people giving input and coming up with solutions to various issues and weird quirks in the code, a lot is able to be 
             accomplished with the combined skill and precision of the team.
-    #FIXME
+    Rylan- Working as a team on this project was a lot better than working alone.  This is the first time I have collaborated on a                  coding assignment.  Having people with me who now how to code saves a lot of time that I might normally waste on trying to              figure certain things out for myself. I also learned more about the progression of the development of larger coding projects            and how certain units are better to start out working on when doing these larger projects.
+   
