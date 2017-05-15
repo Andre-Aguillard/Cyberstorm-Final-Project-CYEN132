@@ -18,3 +18,6 @@ Team Members: Andre Aguillard, Rylan Burlison, Dax Henson
 
 GUI Home screen:
 ![Alt text](GUIcapture.png)
+
+Circuit Layout Note, we used a GPIO breakout to link the Raspberry Pi to the Breadboard
+![Alt Text](CircuitLayoutCapture.PNG)
