@@ -6,7 +6,8 @@ Overview:
         The player guesses the letters in one of 76 different words, which are stored in a dictionary.
         Letters, and only letters, are entered one at a time, and then the word is scanned for each letter.
         If the letter is found, then the display replaces any relevant blanks with the letter, and the GPIO turns on a green LED.
-        If the letter is not found, then the display changes an image and decrements the life counter by one and the GPIO turns on a red LED and decrements the LED life counter by one.
+        If the letter is not found, then the display changes an image and decrements the life counter by one and the GPIO turns on a red 
+        LED and decrements the LED life counter by one.
         If the display has no more blanks, then the word is guessed, and victory achieved.
         If the life counter reaches zero, the player has failed.
         With victory, the player may choose a word from the list of 76 for the next player to guess.
@@ -15,20 +16,29 @@ Overview:
         Hangman's limited number of lives forces the player to think strategically, instead of just defaulting to brute force.
         The victory ability to choose the next word causes the player to have to weigh the difficulty of different words.
         The longest word may have lots of repeated letters, and a word with lots of different letters may be a well known word.
-        In our case, the list of words was a list of many of the 88 official constellations. Unfortunately, due to time crunch, a few constellations were removed from the list because they had spaces.
+        In our case, the list of words was a list of many of the 88 official constellations. Unfortunately, due to time crunch, a few 
+        constellations were removed from the list because they had spaces.
     Difficulties:
         Pop-Up Window:
             Problem:
                 Building a working Pop-Up window for the player to choose a word.
             Solution:
-                #FIXME
-        #FIXME
+                We created a popup window from the Tkinter module in python which displayed a predefined list of constellation names. 
+                This window had a listbox with a scrollbar, and a buttonpad for user input. The numbered buttons all appended their 
+                respective values to a list which is compiled into a string once the enter button is pressed. This then brings up 
+                another popup window and destroys the first. If the user presses the accept button, the displayed word is used to create 
+                a new instance of the Hangman game. If Deny is pressed the previous popup window is called again and the accept/deny one
+                is destroyed. 
 Demonstration:
     https://github.com/Andre-Aguillard/Cyberstorm-Final-Project-CYEN132
 Cyber Storm:
-    Cyberstorm seemed pretty successful. All the teams showed up; some won, and some lost. Some had an easy time, while some were thoroughly frustrated with the previous team's word selection. #FIXME
+    Cyberstorm seemed pretty successful. 7 out of 8 teams showed up; 5 won, and 2 lost. Some had an easy time, while some were 
+    thoroughly frustrated with the previous team's word selection. The challenge was worth 10,000 pts and all teams were given an 
+    opportunity to complete the challenge while it was open. #FIXME
 Future Development:
-    There are some other features that could be added, like support for spaces, or #FIXME
+    There are some other features that could be added, like support for spaces, or the ability to input the entire word at once if the
+    user knows it. Additionally, we could create different themed versions of the game, or create a function wich kept score such as
+    recording the number of words guessed correctly.  #FIXME
 Lessons Learned:
     Dax - I learned that it's very difficult to know how an entire program works line by line, which is why it takes teams to build large programs. I imagine some of this could be alieved with superior code organization theory.
     #FIXME
