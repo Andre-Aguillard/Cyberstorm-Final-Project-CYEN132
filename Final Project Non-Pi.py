@@ -236,7 +236,7 @@ class Hangman(Frame):
         # Starts the game with a list of blanks for every letter in the word.
         Hangman.listOfBlanks = ["__" for x in self.mainWord]
 
-        response = "Imperial Officer:\n\nWelcome to the Death Star, recruit. \I understand this is your first\n" \
+        response = "Imperial Officer:\n\nWelcome to the Death Star, recruit. I understand this is your first\n" \
                  + "day with us, so I'll keep it brief.\n" \
                  + "The Rebel Alliance has launched a ridiculous and foolhardy attack against our\n" \
                  + "superior defense systems, and we need you to man the Ion Cannons on level B.\n" \
@@ -389,15 +389,15 @@ class PopUpWindow(object):
         scrollbar.config(command=PopUpWindow.listbox.yview)
 
         # Instructions text:
-        response = "Congratulations! You've managed to do\n" \
-                 + "your job correctly. Unfortunately due\n" \
-                 + "to piracy in the Yavin sector there is\n"
+        response = "Congratulations! You've managed to do\n"\
+                 + "your job correctly. Unfortunately due\n"\
+                 + "to piracy in the Yavin sector there is\n"\
                  + "a shortage of celebratory cookies, so\n"\
-                 + "we'll just give you a gold star.\n\n" \
-                 + "Additionally, to reward your bravery,\n" \
-                 + "Grand Moff Tarkin has given you\n" \
-                 + "permission to select the next word.\n" \
-                 + "\n\nType in the number of the word\n" \
+                 + "we'll just give you a gold star.\n\n"\
+                 + "Additionally, to reward your bravery,\n"\
+                 + "Grand Moff Tarkin has given you\n"\
+                 + "permission to select the next word.\n"\
+                 + "\n\nType in the number of the word\n"\
                  + "into the popup window and hit accept."
 
         # Input instructions into the text_frame

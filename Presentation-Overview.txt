@@ -1,0 +1,34 @@
+Overview:
+    Goals:
+        To create a game that would be challenging for the students in Cyber Storm and challenging for us to produce, without being irrationally difficult.
+        To implement Hangman in Python, using a GUI and GPIO.
+    Process:
+        The player guesses the letters in one of 76 different words, which are stored in a dictionary.
+        Letters, and only letters, are entered one at a time, and then the word is scanned for each letter.
+        If the letter is found, then the display replaces any relevant blanks with the letter, and the GPIO turns on a green LED.
+        If the letter is not found, then the display changes an image and decrements the life counter by one and the GPIO turns on a red LED and decrements the LED life counter by one.
+        If the display has no more blanks, then the word is guessed, and victory achieved.
+        If the life counter reaches zero, the player has failed.
+        With victory, the player may choose a word from the list of 76 for the next player to guess.
+        With failure, the next player must guess the same word.
+    Relevancy:
+        Hangman's limited number of lives forces the player to think strategically, instead of just defaulting to brute force.
+        The victory ability to choose the next word causes the player to have to weigh the difficulty of different words.
+        The longest word may have lots of repeated letters, and a word with lots of different letters may be a well known word.
+        In our case, the list of words was a list of many of the 88 official constellations. Unfortunately, due to time crunch, a few constellations were removed from the list because they had spaces.
+    Difficulties:
+        Pop-Up Window:
+            Problem:
+                Building a working Pop-Up window for the player to choose a word.
+            Solution:
+                #FIXME
+        #FIXME
+Demonstration:
+    https://github.com/Andre-Aguillard/Cyberstorm-Final-Project-CYEN132
+Cyber Storm:
+    Cyberstorm seemed pretty successful. All the teams showed up; some won, and some lost. Some had an easy time, while some were thoroughly frustrated with the previous team's word selection. #FIXME
+Future Development:
+    There are some other features that could be added, like support for spaces, or #FIXME
+Lessons Learned:
+    Dax - I learned that it's very difficult to know how an entire program works line by line, which is why it takes teams to build large programs. I imagine some of this could be alieved with superior code organization theory.
+    #FIXME

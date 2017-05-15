@@ -389,16 +389,16 @@ class PopUpWindow(object):
         scrollbar.config(command=PopUpWindow.listbox.yview)
 
         # Instructions text:
-        response =("Congratulations! You've managed to do\n" \
-                   "your job correctly. Unfortunately due\n" \
-                   +"to piracy in the Yavin sector there is\n"
-                   +"a shortage of celebratory cookies, so\n"\
-                   +"we'll just give you a gold star.\n\n" \
-                   +"Additionally, to reward your bravery,\n" \
-                   +"Grand Moff Tarkin has given you\n" \
-                   +"permission to select the next word.\n" \
-                   +"\n\nType in the number of the word\n" \
-                   +"into the popup window and hit accept.")
+        response = "Congratulations! You've managed to do\n"\
+                 + "your job correctly. Unfortunately due\n"\
+                 + "to piracy in the Yavin sector there is\n"\
+                 + "a shortage of celebratory cookies, so\n"\
+                 + "we'll just give you a gold star.\n\n"\
+                 + "Additionally, to reward your bravery,\n"\
+                 + "Grand Moff Tarkin has given you\n"\
+                 + "permission to select the next word.\n"\
+                 + "\n\nType in the number of the word\n"\
+                 + "into the popup window and hit accept."
 
         #Input instructions into the text_frame
         PopUpWindow.text.config(state=NORMAL)
